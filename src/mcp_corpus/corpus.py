@@ -2,11 +2,12 @@
 
 from pathlib import Path
 
+from mcp_corpus import config
 from mcp_corpus.envelopes import error, ok
 from mcp_corpus.validation import validate_name
 
 
-def save_markdown(name, markdown, corpus_dir):
+def save_markdown(name, markdown, corpus_dir=None):
     name_result = validate_name(name)
     if not name_result.ok:
         return error("invalid_name", "Invalid corpus item name.")
@@ -14,7 +15,7 @@ def save_markdown(name, markdown, corpus_dir):
     if not markdown.strip():
         return error("invalid_markdown", "Markdown content is empty.")
 
-    corpus_path = Path(corpus_dir)
+    corpus_path = Path(corpus_dir if corpus_dir is not None else config.DEFAULT_CORPUS_DIR)
     normalized_name = name_result.normalized_name
     source_path = corpus_path / "sources" / f"{normalized_name}.md"
     summary_path = corpus_path / "summaries" / f"{normalized_name}.md"
@@ -29,7 +30,11 @@ def save_markdown(name, markdown, corpus_dir):
 
     source_path.write_text(markdown, encoding="utf-8")
     summary_path.write_text(_build_summary(markdown), encoding="utf-8")
-    sidecar_path.write_text(f'name = "{normalized_name}"\n', encoding="utf-8")
+    sidecar_path.write_text(
+        f'name = "{normalized_name}"\n'
+        'source_kind = "manual_md"\n',
+        encoding="utf-8",
+    )
 
     return ok(
         "Saved Markdown item.",

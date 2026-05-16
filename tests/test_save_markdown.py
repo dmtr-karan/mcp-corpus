@@ -1,9 +1,11 @@
 from pathlib import Path
 
+from mcp_corpus import config
+from mcp_corpus.corpus import save_markdown
+from mcp_corpus.validation import validate_name
+
 
 def test_save_markdown_writes_files_and_ok_envelope(tmp_path):
-    from mcp_corpus.corpus import save_markdown
-
     markdown = "\n\n# First line\n\nBody text\n\nFinal line\n\n"
 
     result = save_markdown("Note_1", markdown, tmp_path)
@@ -25,12 +27,35 @@ def test_save_markdown_writes_files_and_ok_envelope(tmp_path):
 
     assert source_path.read_text(encoding="utf-8") == markdown
     assert summary_path.read_text(encoding="utf-8") == "# First line\n\nFinal line\n"
-    assert 'name = "Note_1"' in sidecar_path.read_text(encoding="utf-8")
+    assert sidecar_path.read_text(encoding="utf-8") == (
+        'name = "Note_1"\n'
+        'source_kind = "manual_md"\n'
+    )
+
+
+def test_save_markdown_uses_default_corpus_dir_when_omitted(tmp_path, monkeypatch):
+    monkeypatch.setattr(config, "DEFAULT_CORPUS_DIR", tmp_path)
+
+    result = save_markdown("Default_Dir", "# Title\n")
+
+    source_path = tmp_path / "sources" / "Default_Dir.md"
+    summary_path = tmp_path / "summaries" / "Default_Dir.md"
+    sidecar_path = tmp_path / "sidecars" / "Default_Dir.toml"
+
+    assert result == {
+        "status": "ok",
+        "message": "Saved Markdown item.",
+        "data": {
+            "name": "Default_Dir",
+            "source_path": str(source_path),
+            "summary_path": str(summary_path),
+            "sidecar_path": str(sidecar_path),
+        },
+    }
+    assert source_path.read_text(encoding="utf-8") == "# Title\n"
 
 
 def test_save_markdown_rejects_unsafe_name_and_writes_nothing(tmp_path):
-    from mcp_corpus.corpus import save_markdown
-
     result = save_markdown("../unsafe", "# Title\n", tmp_path)
 
     assert result == {
@@ -43,8 +68,6 @@ def test_save_markdown_rejects_unsafe_name_and_writes_nothing(tmp_path):
 
 
 def test_save_markdown_rejects_empty_markdown_and_writes_nothing(tmp_path):
-    from mcp_corpus.corpus import save_markdown
-
     result = save_markdown("Valid_Name", " \n\t\n", tmp_path)
 
     assert result == {
@@ -57,8 +80,6 @@ def test_save_markdown_rejects_empty_markdown_and_writes_nothing(tmp_path):
 
 
 def test_save_markdown_rejects_duplicate_name_without_overwriting(tmp_path):
-    from mcp_corpus.corpus import save_markdown
-
     first = save_markdown("Duplicate", "# Original\n", tmp_path)
     source_path = Path(first["data"]["source_path"])
 
@@ -74,8 +95,6 @@ def test_save_markdown_rejects_duplicate_name_without_overwriting(tmp_path):
 
 
 def test_save_markdown_summary_uses_single_line_when_first_and_last_match(tmp_path):
-    from mcp_corpus.corpus import save_markdown
-
     result = save_markdown("Single_Line", "\nOnly line\n\n", tmp_path)
 
     summary_path = Path(result["data"]["summary_path"])
@@ -83,8 +102,6 @@ def test_save_markdown_summary_uses_single_line_when_first_and_last_match(tmp_pa
 
 
 def test_validate_name_strips_whitespace_and_rejects_unsafe_names():
-    from mcp_corpus.validation import validate_name
-
     valid = validate_name("  Report_1-2  ")
 
     assert valid.ok is True
