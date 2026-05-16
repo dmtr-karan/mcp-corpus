@@ -95,6 +95,7 @@ Then stop.
 - Mock only external boundaries such as network calls.
 - Do not mock internal helpers just to make tests pass.
 - Add property tests only when validators or parsers have stable rules worth checking across many generated inputs.
+- When a project-local `.venv/` exists, run tests with `.venv/bin/python -m pytest` instead of relying on system Python or an activated shell.
 
 ## Git workflow rules
 
