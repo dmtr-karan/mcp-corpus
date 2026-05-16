@@ -217,6 +217,8 @@ Possible fixture pattern:
 
 Golden files should be used when they make the contract clearer, not as busywork.
 
+When a project-local `.venv/` exists, prefer `.venv/bin/python -m pytest` for reproducible test runs.
+
 ## Mocking
 
 Mock only external boundaries.
