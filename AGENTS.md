@@ -87,6 +87,31 @@ After each slice, report:
 
 Then stop.
 
+## Session handoff workflow
+
+At session start:
+
+- Read `AGENTS.md`.
+- Read `docs/code-style.md`.
+- Read `docs/tool-contracts.md` when the task touches public behavior, tool contracts, resources, or docs.
+- Read `.codex/current-state.md` if it exists.
+- Report current branch, git status summary, test command and latest test result if available, current task, and next recommended step.
+- Do not edit files during startup unless explicitly asked.
+
+At session end:
+
+- Offer to create or update `.codex/current-state.md`.
+- When updating it, include:
+  - current branch
+  - git status summary
+  - test command and result
+  - completed work
+  - next recommended step
+  - unresolved decisions or assumptions
+  - suggested next-session prompt
+
+Keep handoff notes concise, factual, and local to the current repo state.
+
 ## Testing rules
 
 - Prefer behavior/contract tests over implementation-detail tests.
