@@ -276,6 +276,37 @@ Before adding one, state:
 
 Prefer lazy imports for heavy or optional dependencies that are not needed by most code paths.
 
+## Git style
+
+Keep Git operations small, explicit, and easy to review.
+
+Do not commit, push, merge, rebase, reset, or rewrite history unless the user explicitly asks for that operation.
+
+Never delete branches. If branch cleanup would be useful, mention it as a manual follow-up only.
+
+Suggest a new branch when work is non-trivial, risky, experimental, or logically separate from the current work, but do not create one without explicit instruction.
+
+Suggested branch name patterns:
+
+- `feature/<short-name>`
+- `test/<short-name>`
+- `docs/<short-name>`
+- `chore/<short-name>`
+
+Prefer small commits that match one logical slice.
+
+Use concise conventional commit messages, for example:
+
+- `docs: add git workflow rules`
+- `test: cover duplicate corpus names`
+- `fix: handle missing summary files`
+
+Before committing, show `git status`, summarize staged changes, and avoid staging unrelated files.
+
+After committing, report the commit hash and whether the working tree is clean or dirty.
+
+For merge, rebase, reset, or other history-affecting operations, require explicit confirmation first. State the risk and a safer alternative when one exists.
+
 ## Development rhythm
 
 Use small slices.

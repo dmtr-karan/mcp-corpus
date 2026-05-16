@@ -96,6 +96,52 @@ Then stop.
 - Do not mock internal helpers just to make tests pass.
 - Add property tests only when validators or parsers have stable rules worth checking across many generated inputs.
 
+## Git workflow rules
+
+- Never commit, push, merge, rebase, or reset unless explicitly instructed.
+- Never delete branches. If branch cleanup seems useful, mention it only as a human/manual follow-up.
+- Do not rewrite history unless explicitly instructed and the risk has been stated.
+- Do not push unless explicitly instructed.
+
+Suggest creating a new branch when a change is non-trivial, risky, experimental, or logically separate from the current work.
+
+Do not create a branch unless explicitly instructed.
+
+When suggesting a branch, propose a concise name such as:
+
+- `feature/<short-name>`
+- `test/<short-name>`
+- `docs/<short-name>`
+- `chore/<short-name>`
+
+Prefer small commits aligned to one logical slice.
+
+Use concise conventional commit messages such as:
+
+- `chore:`
+- `docs:`
+- `test:`
+- `feat:`
+- `fix:`
+- `refactor:`
+
+Before any commit:
+
+- show `git status`
+- summarize staged changes
+- confirm no unrelated files are staged
+
+Do not stage unrelated files.
+
+After committing:
+
+- show the commit hash
+- show clean/dirty status
+
+For merges, rebases, resets, or any history-affecting operation, require explicit confirmation.
+
+Before proposing a merge, rebase, reset, or history rewrite, state the risk and a safer alternative if one exists.
+
 ## MCP design rules
 
 - Keep `server.py` thin: MCP wrappers only.
