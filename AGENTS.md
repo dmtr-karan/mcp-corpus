@@ -112,6 +112,19 @@ At session end:
 
 Keep handoff notes concise, factual, and local to the current repo state.
 
+When asked to provide the next startup prompt, make it a bootstrap prompt only.
+
+The prompt must:
+- tell the next agent to read AGENTS.md and docs/code-style.md first
+- tell it to read .codex/current-state.md if it exists
+- state the target repo and reference repo paths
+- state that mcp-poc is reference-only and must not be modified
+- ask for repo state reporting before any edits
+- forbid implementation, tests, commits, or file edits during startup
+- end with "Stop after reporting."
+
+Do not paste the full permanent project rules into the startup prompt. Those belong in AGENTS.md and docs/code-style.md.
+
 ## Testing rules
 
 - Prefer behavior/contract tests over implementation-detail tests.

@@ -264,6 +264,26 @@ Black-box client verification notes may live in `docs/black-box-client-verificat
 
 Avoid long historical development notes in the public repo.
 
+## Documentation audiences
+
+Separate human-facing documentation from agent/session memory.
+
+Human-facing documentation is for developers, reviewers, and future readers. It should be concise, complete, and easy to scan. It should explain what the project does, how to run it, how it is structured, and how to verify it.
+
+Agent/session memory is for preserving planning context, audit notes, implementation history, rejected options, and step-by-step handoff information. It may be longer and may duplicate some context if that helps future agent sessions.
+
+Keep agent/session memory out of the main human documentation path.
+
+Suggested layout:
+
+- `README.md` — short project overview and quickstart
+- `docs/architecture.md` — current architecture, not history
+- `docs/tool-contracts.md` — stable public tool/resource contracts
+- `docs/demo.md` or `docs/verification.md` — how to verify the current project
+- `agent-notes/` — audit reports, implementation plans, session notes, historical reasoning, migration notes
+
+Do not put long chronological development logs, agent handoff blocks, or design-history dumps in the main README or primary docs.
+
 ## Dependency style
 
 Start with minimal dependencies.
