@@ -86,6 +86,16 @@ Full contracts belong in:
 - tests
 - fixtures or golden files where useful
 
+## Docstrings and focused tests
+
+Public or public-ish functions should have short docstrings that explain purpose, not the full contract.
+
+Detailed behavior, edge cases, envelope shapes, and examples belong in `docs/tool-contracts.md`, tests, and fixtures where useful. Avoid long function docstrings that duplicate those contracts.
+
+Test files should stay focused on the behavior named by the file. When a file starts mixing separate features, split the tests by feature so failures remain easy to scan and explain.
+
+Prefer cleanup that preserves behavior and improves only organization or readability. For these cleanup slices, run the full test suite and confirm no production behavior changed.
+
 ## Structured returns
 
 At the MCP boundary, use stable structured envelopes.
