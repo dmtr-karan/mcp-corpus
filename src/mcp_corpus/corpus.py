@@ -8,6 +8,7 @@ from mcp_corpus.validation import validate_name
 
 
 def save_markdown(name, markdown, corpus_dir=None):
+    """Save user-provided Markdown into the local corpus."""
     name_result = validate_name(name)
     if not name_result.ok:
         return error("invalid_name", "Invalid corpus item name.")
@@ -47,7 +48,21 @@ def save_markdown(name, markdown, corpus_dir=None):
     )
 
 
+def list_summaries(corpus_dir=None):
+    """List saved summary names from the local corpus."""
+    corpus_path = Path(corpus_dir if corpus_dir is not None else config.DEFAULT_CORPUS_DIR)
+    summaries_path = corpus_path / "summaries"
+
+    if not summaries_path.exists():
+        names = []
+    else:
+        names = sorted(path.stem for path in summaries_path.glob("*.md") if path.is_file())
+
+    return ok("Listed summaries.", {"names": names})
+
+
 def _build_summary(markdown):
+    """Build a small readable summary from Markdown content."""
     lines = [line.strip() for line in markdown.splitlines() if line.strip()]
     first_line = lines[0]
     last_line = lines[-1]
