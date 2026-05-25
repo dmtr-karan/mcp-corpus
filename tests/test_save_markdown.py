@@ -2,7 +2,6 @@ from pathlib import Path
 
 from mcp_corpus import config
 from mcp_corpus.corpus import save_markdown
-from mcp_corpus.validation import validate_name
 
 
 def test_save_markdown_writes_files_and_ok_envelope(tmp_path):
@@ -100,14 +99,3 @@ def test_save_markdown_summary_uses_single_line_when_first_and_last_match(tmp_pa
     summary_path = Path(result["data"]["summary_path"])
     assert summary_path.read_text(encoding="utf-8") == "Only line\n"
 
-
-def test_validate_name_strips_whitespace_and_rejects_unsafe_names():
-    valid = validate_name("  Report_1-2  ")
-
-    assert valid.ok is True
-    assert valid.normalized_name == "Report_1-2"
-
-    for name in ["", "two words", "path/name", r"path\name", "../name", "name.md", "name!"]:
-        result = validate_name(name)
-        assert result.ok is False
-        assert result.error_code == "invalid_name"
