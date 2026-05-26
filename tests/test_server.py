@@ -35,5 +35,27 @@ def test_save_markdown_tool_delegates_to_save_markdown(monkeypatch):
     assert calls == [("Note", "# Title\n")]
 
 
-def test_list_summaries_tool_is_not_wired_yet():
-    assert not hasattr(server, "list_summaries_tool")
+def test_list_summaries_tool_signature_does_not_expose_corpus_dir():
+    signature = inspect.signature(server.list_summaries_tool)
+
+    assert list(signature.parameters) == []
+
+
+def test_list_summaries_tool_delegates_to_list_summaries(monkeypatch):
+    expected = {
+        "status": "ok",
+        "message": "Listed summaries.",
+        "data": {"names": ["alpha", "zeta"]},
+    }
+    calls = []
+
+    def fake_list_summaries():
+        calls.append(())
+        return expected
+
+    monkeypatch.setattr(server, "list_summaries", fake_list_summaries)
+
+    result = server.list_summaries_tool()
+
+    assert result == expected
+    assert calls == [()]

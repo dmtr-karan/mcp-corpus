@@ -2,7 +2,7 @@
 
 from fastmcp import FastMCP
 
-from mcp_corpus.corpus import save_markdown
+from mcp_corpus.corpus import list_summaries, save_markdown
 
 mcp = FastMCP("mcp-corpus")
 
@@ -16,6 +16,16 @@ def save_markdown_tool(name: str, markdown: str):
     envelope; full contract is documented in docs/tool-contracts.md.
     """
     return save_markdown(name, markdown)
+
+
+@mcp.tool
+def list_summaries_tool():
+    """List saved summary names from the local corpus.
+
+    Use this when the user needs to discover saved corpus summaries. Returns a
+    structured status envelope; full contract is documented in docs/tool-contracts.md.
+    """
+    return list_summaries()
 
 
 if __name__ == "__main__":
