@@ -7,6 +7,19 @@ The project is intentionally early and boring. Today it provides tested local
 filesystem functions for saving Markdown into a corpus layout and listing saved
 summaries. The current MCP tools are wired through FastMCP.
 
+## Current status
+
+Current milestone: local Markdown corpus with two FastMCP tools and black-box
+client verification.
+
+Implemented MCP tools:
+
+- `save_markdown_tool(name, markdown)`
+- `list_summaries_tool()`
+
+Next planned milestone: expose saved summaries as readable MCP resources using
+a `summary://{name}` resource URI.
+
 ## Current functions
 
 The current behavior lives in `src/mcp_corpus/corpus.py`.
