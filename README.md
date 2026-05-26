@@ -5,7 +5,7 @@ discovery, and readable resource workflows.
 
 The project is intentionally early and boring. Today it provides tested local
 filesystem functions for saving Markdown into a corpus layout and listing saved
-summaries. MCP server wiring is not implemented yet.
+summaries. One MCP tool, `save_markdown_tool`, is wired through FastMCP.
 
 ## Current functions
 
@@ -52,8 +52,24 @@ When `.venv/` exists, run:
 .venv/bin/python -m pytest
 ```
 
+## MCP server
+
+Run the local FastMCP server with:
+
+```bash
+.venv/bin/python -m mcp_corpus.server
+```
+
+Currently wired MCP tool:
+
+- `save_markdown_tool(name, markdown)`
+
+`list_summaries` remains a local filesystem function; it is not currently wired
+as an MCP tool.
+
+`.vscode/mcp.json` may be used as optional VS Code workspace MCP configuration.
+
 ## Notes
 
-- `src/mcp_corpus/server.py` is currently a placeholder for future MCP wiring.
 - Full current behavior is documented in `docs/tool-contracts.md` and covered by
   tests.
