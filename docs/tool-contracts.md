@@ -1,6 +1,11 @@
 # Tool Contracts
 
-Tool and resource contracts will be documented test-first as the project grows.
+Tool and resource contracts are documented test-first as the project grows.
+
+This file distinguishes between core filesystem functions and MCP tool wrappers.
+Core functions may accept `corpus_dir` for tests and local use. MCP tool
+wrappers do not expose `corpus_dir`; they use the default corpus directory and
+delegate to the core functions.
 
 ## save_markdown(name, markdown, corpus_dir=None)
 
@@ -18,6 +23,14 @@ Behavior:
 Success returns `status: "ok"` with normalized `name`, `source_path`, `summary_path`, and `sidecar_path`.
 
 Errors return `status: "error"` with one of: `invalid_name`, `invalid_markdown`, `already_exists`.
+
+### MCP wrapper: `save_markdown_tool(name, markdown)`
+
+Exposes `save_markdown` through MCP.
+
+- Delegates to `save_markdown(name, markdown)`.
+- Does not expose `corpus_dir` at the MCP boundary.
+- Returns the same structured envelope as the core function.
 
 ---
 
@@ -44,3 +57,11 @@ Success envelope:
       "message": "Listed summaries.",
       "data": {"names": ["example"]}
     }
+
+### MCP wrapper: `list_summaries_tool()`
+
+Exposes `list_summaries` through MCP.
+
+- Delegates to `list_summaries()`.
+- Exposes no parameters at the MCP boundary.
+- Returns the same structured envelope as the core function.
