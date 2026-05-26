@@ -95,6 +95,10 @@ expose `corpus_dir` at the MCP boundary.
 
 `.vscode/mcp.json` may be used as optional VS Code workspace MCP configuration.
 
+Client support for MCP features can vary. Some clients may expose tools,
+resources, and file attachments differently, so attachment-to-tool workflows may
+depend on the MCP client being used.
+
 ## Notes
 
 - Full current behavior is documented in `docs/tool-contracts.md` and covered by
