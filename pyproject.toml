@@ -8,7 +8,9 @@ version = "0.1.0"
 description = "A small MCP corpus project for experimenting with tool and resource workflows."
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "fastmcp",
+]
 
 [project.optional-dependencies]
 dev = [
