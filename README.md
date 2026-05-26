@@ -4,21 +4,23 @@ A small, public-safe corpus project for experimenting with MCP-style ingestion,
 discovery, and readable resource workflows.
 
 The project is intentionally early and boring. Today it provides tested local
-filesystem functions for saving Markdown into a corpus layout and listing saved
-summaries. The current MCP tools are wired through FastMCP.
+filesystem functions for saving Markdown into a corpus layout, listing saved
+summaries, and reading saved summaries. The current MCP surface is wired through
+FastMCP.
 
 ## Current status
 
-Current milestone: local Markdown corpus with two FastMCP tools and black-box
-client verification.
+Current milestone: local Markdown corpus with two FastMCP tools and one readable
+summary resource.
 
 Implemented MCP tools:
 
 - `save_markdown_tool(name, markdown)`
 - `list_summaries_tool()`
 
-Next planned milestone: expose saved summaries as readable MCP resources using
-a `summary://{name}` resource URI.
+Implemented MCP resource:
+
+- `summary://{name}`
 
 ## Current functions
 
@@ -47,6 +49,12 @@ Lists saved summary names from `<corpus_dir>/summaries/*.md`.
 
 It returns names without the `.md` suffix, sorted alphabetically. Missing corpus
 or summary directories return an empty list.
+
+### `read_summary(name, corpus_dir=None)`
+
+Reads one saved summary from `<corpus_dir>/summaries/<name>.md` after validating
+`name` as a logical corpus item name. It returns summary content without local
+filesystem paths.
 
 ## Setup
 
@@ -78,8 +86,12 @@ Currently wired MCP tools:
 - `save_markdown_tool(name, markdown)`
 - `list_summaries_tool()`
 
-The MCP tool wrappers use the default local corpus directory; they do not expose
-`corpus_dir` at the MCP boundary.
+Currently wired MCP resource:
+
+- `summary://{name}`
+
+The MCP-facing wrappers use the default local corpus directory; they do not
+expose `corpus_dir` at the MCP boundary.
 
 `.vscode/mcp.json` may be used as optional VS Code workspace MCP configuration.
 

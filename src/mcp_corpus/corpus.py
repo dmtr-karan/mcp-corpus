@@ -61,6 +61,28 @@ def list_summaries(corpus_dir=None):
     return ok("Listed summaries.", {"names": names})
 
 
+def read_summary(name, corpus_dir=None):
+    """Read one saved summary from the local corpus."""
+    name_result = validate_name(name)
+    if not name_result.ok:
+        return error("invalid_name", "Invalid corpus item name.")
+
+    corpus_path = Path(corpus_dir if corpus_dir is not None else config.DEFAULT_CORPUS_DIR)
+    normalized_name = name_result.normalized_name
+    summary_path = corpus_path / "summaries" / f"{normalized_name}.md"
+
+    if not summary_path.is_file():
+        return error("not_found", "Summary not found.")
+
+    return ok(
+        "Read summary.",
+        {
+            "name": normalized_name,
+            "content": summary_path.read_text(encoding="utf-8"),
+        },
+    )
+
+
 def _build_summary(markdown):
     """Build a small readable summary from Markdown content."""
     lines = [line.strip() for line in markdown.splitlines() if line.strip()]

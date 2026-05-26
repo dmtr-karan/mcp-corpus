@@ -65,3 +65,46 @@ Exposes `list_summaries` through MCP.
 - Delegates to `list_summaries()`.
 - Exposes no parameters at the MCP boundary.
 - Returns the same structured envelope as the core function.
+
+---
+
+## read_summary(name, corpus_dir=None)
+
+Purpose: read one saved summary from the local corpus.
+
+Inputs:
+
+- `name`: logical corpus item name. It is validated with the same name rules as
+  `save_markdown`.
+- `corpus_dir`: optional corpus directory. When omitted, uses `DEFAULT_CORPUS_DIR`.
+
+Behavior:
+
+- Rejects invalid names before building any path.
+- Reads only `<corpus_dir>/summaries/<normalized-name>.md`.
+- Returns Markdown content without exposing local filesystem paths.
+- Returns `not_found` when the summary file does not exist.
+
+Success envelope:
+
+    {
+      "status": "ok",
+      "message": "Read summary.",
+      "data": {"name": "example", "content": "# Example\n"}
+    }
+
+Errors return `status: "error"` with one of: `invalid_name`, `not_found`.
+Error messages do not include local filesystem paths.
+
+### MCP resource: `summary://{name}`
+
+Exposes saved summaries as readable Markdown resources.
+
+- `{name}` is a logical corpus item name, not a filesystem path.
+- Delegates to `read_summary(name)`.
+- Reuses the same name validation rules as corpus tools.
+- Reads only `summaries/<normalized-name>.md` from the configured corpus directory.
+- Does not expose `corpus_dir` at the MCP boundary.
+- Success returns the summary Markdown content only.
+- Invalid or missing summaries return a short path-free error string such as `invalid_name: ...` or `not_found: ...`.
+- Local filesystem paths are not exposed in resource output.
